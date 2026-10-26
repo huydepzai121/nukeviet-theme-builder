@@ -1,0 +1,8 @@
+{
+  "name": "nukeviet-theme-builder",
+  "version": "1.0.0",
+  "description": "Install NukeViet 4.6 locally and build a custom theme filled with real content scraped from an organization's official website.",
+  "author": { "name": "Trường Phạm Văn" },
+  "keywords": ["nukeviet", "php", "cms", "theme", "xtemplate", "vietnam"],
+  "license": "MIT"
+}

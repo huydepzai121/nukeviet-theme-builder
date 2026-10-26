@@ -1,0 +1,179 @@
+/* ===== VIMARU theme – Trường Đại học Hàng hải Việt Nam ===== */
+:root{--navy:#1c3691;--navy-d:#12245f;--navy-dd:#0b1840;--blue:#095cb1;--gold:#ffe000;--red:#d71920;--ink:#1d2433;--muted:#5f6b7f;--line:#e3e8f2;--bg:#f4f6fb}
+body{font-family:"Roboto","Segoe UI",Arial,sans-serif;color:var(--ink);background:#fff;font-size:15px}
+a{color:var(--navy)}a:hover{color:var(--blue)}
+.vmu-wrap{max-width:1240px;margin:0 auto;padding:0 16px}
+/* top bar */
+.vmu-topbar{background:var(--navy-dd);color:#c9d3ef;font-size:13px}
+.vmu-topbar .vmu-wrap{display:flex;justify-content:space-between;align-items:center;min-height:36px;gap:12px}
+.vmu-topbar ul{list-style:none;margin:0;padding:0;display:flex;gap:18px;align-items:center}
+.vmu-topbar a{color:#fff}.vmu-topbar i{color:var(--gold);margin-right:4px}
+.vmu-lang b{background:var(--gold);color:var(--navy-dd);padding:1px 6px;border-radius:3px}
+/* header */
+.vmu-header{background:#fff;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(18,36,95,.12)}
+.vmu-header-inner{display:flex;align-items:center;gap:24px;padding-top:12px;padding-bottom:12px}
+.vmu-logo{display:flex;align-items:center;gap:14px;text-decoration:none!important}
+.vmu-logo img{width:72px;height:72px}
+.vmu-logo-text{display:flex;flex-direction:column;line-height:1.2}
+.vmu-logo-text small{font-size:12px;text-transform:uppercase;color:var(--muted);letter-spacing:.06em}
+.vmu-logo-text strong{font-size:22px;text-transform:uppercase;color:var(--navy);font-weight:800;letter-spacing:.01em}
+.vmu-logo-text em{font-style:normal;color:var(--red);font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.12em}
+.vmu-logo.light strong{color:#fff}.vmu-logo.light em{color:var(--gold)}
+.vmu-search{margin-left:auto;width:300px}
+.vmu-search .form-control{border-radius:22px 0 0 22px;border:1px solid var(--line);height:40px;box-shadow:none;background:var(--bg)}
+.vmu-search .btn{border-radius:0 22px 22px 0;height:40px;background:var(--navy);color:#fff;border:0;padding:0 16px}
+.vmu-burger{display:none;margin-left:auto;background:var(--navy);border:0;border-radius:6px;padding:10px;width:44px}
+.vmu-burger span{display:block;height:2px;background:#fff;margin:5px 0}
+/* nav */
+.vmu-nav{background:linear-gradient(90deg,var(--navy-d),var(--navy) 60%,var(--blue))}
+.vmu-menu{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap}
+.vmu-menu>li{position:relative}
+.vmu-menu>li>a{display:block;color:#fff;padding:14px 17px;font-weight:600;font-size:15px;text-transform:uppercase;letter-spacing:.01em;text-decoration:none}
+.vmu-menu>li>a:hover,.vmu-menu>li:hover>a{background:rgba(255,255,255,.12);color:var(--gold)}
+.vmu-menu>li.home>a{font-size:18px;padding:12px 16px}
+.vmu-drop{list-style:none;margin:0;padding:8px 0;position:absolute;left:0;top:100%;min-width:260px;background:#fff;box-shadow:0 12px 28px rgba(11,24,64,.2);border-top:3px solid var(--gold);opacity:0;visibility:hidden;transform:translateY(8px);transition:.2s;z-index:50}
+.vmu-menu>li:hover .vmu-drop{opacity:1;visibility:visible;transform:none}
+.vmu-drop a{display:block;padding:9px 18px;color:var(--ink);font-size:14px;text-decoration:none}
+.vmu-drop a:hover{background:var(--bg);color:var(--navy);padding-left:22px}
+/* hero */
+.vmu-hero{position:relative;background:var(--navy-dd);overflow:hidden}
+.vmu-slides{position:relative;aspect-ratio:3/1;max-height:520px;width:100%}
+.vmu-slide{position:absolute;inset:0;opacity:0;transition:opacity .8s;display:block}
+.vmu-slide.active{opacity:1;z-index:1}
+.vmu-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.vmu-hero-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;background:rgba(11,24,64,.55);color:#fff;border:0;width:46px;height:46px;border-radius:50%;font-size:26px;line-height:1}
+.vmu-hero-nav:hover{background:var(--gold);color:var(--navy-dd)}
+.vmu-hero-nav.prev{left:18px}.vmu-hero-nav.next{right:18px}
+.vmu-dots{position:absolute;bottom:14px;left:0;right:0;text-align:center;z-index:3}
+.vmu-dots i{display:inline-block;width:10px;height:10px;border-radius:5px;background:rgba(255,255,255,.55);margin:0 4px;cursor:pointer;transition:.2s}
+.vmu-dots i.on{width:28px;background:var(--gold)}
+/* quick links */
+.vmu-quick{background:var(--bg);padding:0 0 10px}
+.vmu-quick .vmu-wrap{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;transform:translateY(-28px);position:relative;z-index:5}
+.vmu-quick a{background:#fff;border-radius:10px;padding:18px 16px;box-shadow:0 8px 24px rgba(18,36,95,.12);text-decoration:none;display:flex;flex-direction:column;border-bottom:3px solid transparent;transition:.2s}
+.vmu-quick a:hover{transform:translateY(-4px);border-bottom-color:var(--gold)}
+.vmu-quick i{font-size:26px;color:var(--navy);margin-bottom:8px}
+.vmu-quick b{color:var(--navy);font-size:16px}.vmu-quick span{color:var(--muted);font-size:13px}
+/* sections */
+.vmu-section{padding:44px 0}
+.vmu-section.alt{background:var(--bg)}
+.vmu-head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--line);margin-bottom:22px;position:relative}
+.vmu-head h3{margin:0 0 -2px;padding-bottom:10px;font-size:22px;font-weight:800;text-transform:uppercase;color:var(--ink);border-bottom:3px solid var(--navy)}
+.vmu-head h3 span{color:var(--navy)}
+.vmu-head a{font-weight:600;font-size:14px;padding-bottom:10px}
+.vmu-head.light{border-color:rgba(255,255,255,.2)}.vmu-head.light h3{color:#fff;border-color:var(--gold)}.vmu-head.light h3 span{color:var(--gold)}
+.cat{display:inline-block;font-size:11px;text-transform:uppercase;font-weight:700;color:var(--blue);letter-spacing:.05em;margin-bottom:6px}
+time{color:var(--muted);font-size:13px}
+.vmu-main-grid{display:grid;grid-template-columns:minmax(0,2.1fr) minmax(0,1fr);gap:32px}
+.vmu-feat{display:grid;grid-template-columns:1.25fr 1fr;gap:22px;text-decoration:none!important;margin-bottom:22px}
+.vmu-feat .img{border-radius:10px;overflow:hidden;aspect-ratio:16/10}
+.vmu-feat img,.vmu-card img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.vmu-feat:hover img,.vmu-card:hover img{transform:scale(1.05)}
+.vmu-feat h4{font-size:21px;line-height:1.35;color:var(--ink);font-weight:700;margin:0 0 10px}
+.vmu-feat p{color:var(--muted);font-size:14.5px;line-height:1.6}
+.vmu-feat:hover h4,.vmu-card:hover h5{color:var(--navy)}
+.vmu-news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.vmu-card{display:flex;flex-direction:column;text-decoration:none!important;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 10px rgba(18,36,95,.08);transition:.2s}
+.vmu-card:hover{box-shadow:0 10px 26px rgba(18,36,95,.16)}
+.vmu-card .img{aspect-ratio:16/10;overflow:hidden}
+.vmu-card .body{padding:12px 14px 14px}
+.vmu-card h5{font-size:15px;line-height:1.45;color:var(--ink);font-weight:700;margin:0 0 8px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.vmu-box{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 18px 8px;position:sticky;top:150px}
+.vmu-notice{list-style:none;margin:0;padding:0}
+.vmu-notice li{display:flex;gap:12px;padding:12px 0;border-bottom:1px dashed var(--line)}
+.vmu-notice li:last-child{border:0}
+.vmu-notice .d{flex:0 0 58px;text-align:center;background:var(--navy);color:#fff;border-radius:8px;padding:6px 0;height:max-content}
+.vmu-notice .d b{display:block;font-size:20px;line-height:1}.vmu-notice .d span{font-size:11px;color:var(--gold)}
+.vmu-notice a{color:var(--ink);font-weight:600;font-size:14px;line-height:1.45}.vmu-notice a:hover{color:var(--navy)}
+/* stats */
+.vmu-stats{background:linear-gradient(120deg,var(--navy-dd),var(--navy) 55%,var(--blue));color:#fff;padding:36px 0;position:relative;overflow:hidden}
+.vmu-stats:after{content:"";position:absolute;right:-80px;top:-80px;width:320px;height:320px;border:40px solid rgba(255,255,255,.05);border-radius:50%}
+.vmu-stats .vmu-wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center}
+.vmu-stats b{display:block;font-size:44px;font-weight:800;color:var(--gold);line-height:1.1}
+.vmu-stats span{font-size:14px;text-transform:uppercase;letter-spacing:.05em;color:#dfe6fb}
+/* events + tuyen sinh */
+.vmu-two{display:grid;grid-template-columns:1.3fr 1fr;gap:32px}
+.vmu-event{display:flex;gap:16px;background:#fff;border-radius:10px;padding:14px;margin-bottom:12px;text-decoration:none!important;border-left:4px solid var(--navy);transition:.2s}
+.vmu-event:hover{border-left-color:var(--gold);box-shadow:0 6px 18px rgba(18,36,95,.12)}
+.vmu-event .d{flex:0 0 66px;text-align:center;border-right:1px solid var(--line);padding-right:12px}
+.vmu-event .d b{display:block;font-size:30px;color:var(--navy);line-height:1;font-weight:800}.vmu-event .d span{font-size:12px;color:var(--muted)}
+.vmu-event h5{margin:0 0 6px;font-weight:700;color:var(--ink);font-size:15px;line-height:1.4}
+.vmu-event p{margin:0;color:var(--muted);font-size:13.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.vmu-ts-box{background:var(--navy);border-radius:12px;padding:22px;color:#fff;background-image:radial-gradient(circle at 100% 0,rgba(255,224,0,.18),transparent 45%)}
+.vmu-ts-box ul{list-style:none;margin:0 0 16px;padding:0}
+.vmu-ts-box li{padding:11px 0;border-bottom:1px solid rgba(255,255,255,.15)}
+.vmu-ts-box li a{color:#fff;font-weight:600;display:block}.vmu-ts-box li a:hover{color:var(--gold)}
+.vmu-ts-box li i{color:var(--gold);margin-right:6px}.vmu-ts-box time{color:#b9c6ec;font-size:12px}
+.vmu-ts-cta{display:flex;gap:10px;flex-wrap:wrap}
+.btn-vmu{display:inline-block;background:var(--gold);color:var(--navy-dd)!important;font-weight:700;border-radius:24px;padding:10px 18px;text-decoration:none!important;font-size:14px}
+.btn-vmu.ghost{background:transparent;border:1px solid rgba(255,255,255,.6);color:#fff!important}
+.vmu-kh{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+/* units */
+.vmu-section.units{background:var(--navy-dd) url() center/cover;background-image:linear-gradient(rgba(11,24,64,.92),rgba(11,24,64,.92)),url(../../../uploads/news/vimaru/site/banner-5.jpg);background-size:cover;background-position:center}
+.vmu-units{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.vmu-units a{display:flex;align-items:center;gap:12px;color:#fff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:14px;font-weight:600;text-decoration:none;transition:.2s}
+.vmu-units a i{width:36px;height:36px;border-radius:50%;background:var(--gold);color:var(--navy-dd);display:flex;align-items:center;justify-content:center;flex:0 0 36px}
+.vmu-units a:hover{background:var(--blue);border-color:var(--blue)}
+/* partners */
+.vmu-partners{overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.vmu-partners .track{display:flex;gap:14px;width:max-content;animation:vmuMarq 60s linear infinite}
+.vmu-partners:hover .track{animation-play-state:paused}
+.vmu-partners a{white-space:nowrap;border:1px solid var(--line);border-radius:30px;padding:10px 20px;color:var(--navy);font-weight:600;background:#fff}
+.vmu-partners a:hover{background:var(--navy);color:#fff}
+@keyframes vmuMarq{to{transform:translateX(-50%)}}
+/* inner pages */
+.section-body{background:var(--bg);padding:26px 0 40px}
+.section-body #body{width:auto;padding:0;background:transparent}
+.section-body .third-nav{background:#fff;border-radius:8px;padding:6px 14px;margin-bottom:18px;box-shadow:0 1px 4px rgba(18,36,95,.06)}
+.section-body .breadcrumbs li a{color:var(--navy)}
+.section-body .col-sm-16>.news_column,.section-body .page,.section-body .panel{border-radius:10px}
+.section-body .panel{border-color:var(--line);box-shadow:0 2px 8px rgba(18,36,95,.06)}
+.section-body .panel-heading,.section-body .panel-primary>.panel-heading{background:var(--navy)!important;color:#fff!important;border:0;font-weight:700;text-transform:uppercase}
+.section-body .panel-heading a{color:#fff}
+.news_column .panel-body,.page{background:#fff}
+.bodytext,#news-bodyhtml{font-size:16px;line-height:1.75;text-align:justify}
+.bodytext img,#news-bodyhtml img{max-width:100%;height:auto!important;border-radius:6px}
+.news_column h1,.page h1,.news_column h2{color:var(--navy);font-weight:800}
+.btn-primary{background:var(--navy);border-color:var(--navy)}
+/* footer */
+.vmu-footer{background:var(--navy-dd);color:#c4cde8;padding-top:44px;border-top:4px solid var(--gold)}
+.vmu-foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1.2fr 1fr;gap:28px;padding-bottom:28px}
+.vmu-footer p{margin:0 0 8px;font-size:14px}.vmu-footer p i{color:var(--gold);width:18px}
+.vmu-footer a{color:#fff}.vmu-footer a:hover{color:var(--gold)}
+.vmu-footer h4{color:#fff;font-size:16px;font-weight:700;text-transform:uppercase;margin:6px 0 16px;padding-bottom:10px;border-bottom:2px solid var(--gold);display:inline-block}
+.vmu-footer ul{list-style:none;padding:0;margin:0}.vmu-footer li{padding:5px 0;font-size:14px}
+.vmu-footer .vmu-logo{margin-bottom:16px}.vmu-footer .vmu-logo img{width:64px;height:64px;background:#fff;border-radius:50%}
+.vmu-footer .vmu-logo strong{font-size:17px}
+.vmu-social a{display:inline-flex;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.1);align-items:center;justify-content:center;margin-right:8px}
+.vmu-copy{background:#07102b;padding:14px 0;font-size:13px;color:#93a0c4}
+.vmu-copy .bttop{float:right}
+/* responsive */
+@media (max-width:1199px){.vmu-menu>li>a{padding:14px 11px;font-size:14px}.vmu-logo-text strong{font-size:19px}}
+@media (max-width:991px){
+ .vmu-search{display:none}.vmu-burger{display:block}
+ .vmu-nav{display:none}.vmu-menu-open .vmu-nav{display:block}
+ .vmu-menu{flex-direction:column}.vmu-menu>li>a{padding:12px 6px;border-bottom:1px solid rgba(255,255,255,.1)}
+ .vmu-drop{position:static;opacity:1;visibility:visible;transform:none;box-shadow:none;background:rgba(255,255,255,.06);border:0;display:none}
+ .vmu-menu>li:hover .vmu-drop{display:block}.vmu-drop a{color:#fff}
+ .vmu-main-grid,.vmu-two{grid-template-columns:1fr}
+ .vmu-quick .vmu-wrap{grid-template-columns:repeat(3,1fr)}
+ .vmu-kh,.vmu-units{grid-template-columns:repeat(2,1fr)}
+ .vmu-foot-grid{grid-template-columns:1fr 1fr}
+ .vmu-box{position:static}
+}
+@media (max-width:640px){
+ .vmu-topbar .vmu-contacts li:first-child{display:none}
+ .vmu-logo img{width:54px;height:54px}.vmu-logo-text strong{font-size:15px}.vmu-logo-text small{font-size:10px}.vmu-logo-text em{font-size:11px}
+
+ .vmu-hero-nav{width:36px;height:36px;font-size:20px}
+ .vmu-quick .vmu-wrap{grid-template-columns:1fr 1fr;transform:translateY(-16px)}
+ .vmu-quick a:last-child{grid-column:span 2}
+ .vmu-feat{grid-template-columns:1fr}
+ .vmu-news-grid,.vmu-kh{grid-template-columns:1fr 1fr;gap:12px}
+ .vmu-card h5{font-size:14px}
+ .vmu-stats .vmu-wrap{grid-template-columns:1fr 1fr}.vmu-stats b{font-size:34px}
+ .vmu-units{grid-template-columns:1fr}
+ .vmu-foot-grid{grid-template-columns:1fr}
+ .vmu-head h3{font-size:18px}
+ .vmu-section{padding:30px 0}
+}
