@@ -7,10 +7,10 @@ Plugin cho Claude Code: cài NukeViet 4.6 (PHP 8 + MariaDB), dựng giao diện 
 ## Cài đặt
 Giải nén `nukeviet-theme-builder.zip` (ví dụ vào `~/claude-plugins/nukeviet-theme-builder`), rồi trong Claude Code:
 ```
-/plugin marketplace add ~/claude-plugins/nukeviet-theme-builder
+/plugin marketplace add huydepzai121/nukeviet-theme-builder
 /plugin install nukeviet-theme-builder@nukeviet-tools
 ```
-Hoặc từ terminal: `claude plugin marketplace add <đường-dẫn>` rồi `claude plugin install nukeviet-theme-builder@nukeviet-tools`.
+Hoặc từ terminal: `claude plugin marketplace add huydepzai121/nukeviet-theme-builder` rồi `claude plugin install nukeviet-theme-builder@nukeviet-tools`.
 Chạy thử không cần cài: `claude --plugin-dir <đường-dẫn>`.
 
 ## Sử dụng
@@ -35,10 +35,10 @@ Claude Code plugin that installs NukeViet 4.6 (PHP 8 + MariaDB), builds a custom
 ### Install
 Unzip, then inside Claude Code:
 ```
-/plugin marketplace add /path/to/nukeviet-theme-builder
+/plugin marketplace add huydepzai121/nukeviet-theme-builder
 /plugin install nukeviet-theme-builder@nukeviet-tools
 ```
-CLI: `claude plugin marketplace add /path/...` and `claude plugin install nukeviet-theme-builder@nukeviet-tools`. Quick test: `claude --plugin-dir /path/...`.
+CLI: `claude plugin marketplace add huydepzai121/nukeviet-theme-builder` and `claude plugin install nukeviet-theme-builder@nukeviet-tools`. Quick test: `claude --plugin-dir /path/...`.
 
 ### Use
 `/nukeviet-theme <organization or URL> [theme-name]`, or just ask for a NukeViet site with real content.
