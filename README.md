@@ -20,6 +20,26 @@ Kèm sao lưu DB, kiểm tra HTTP 200, ảnh chụp desktop/mobile và file zip 
 Terminal: `claude plugin marketplace add huydepzai121/nukeviet-theme-builder` rồi `claude plugin install nukeviet-theme-builder@nukeviet-tools`.
 Chạy thử: `claude --plugin-dir <đường-dẫn>`.
 
+## Cập nhật
+
+Trong Claude Code:
+
+```
+/plugin marketplace update nukeviet-tools
+/plugin uninstall nukeviet-theme-builder@nukeviet-tools
+/plugin install nukeviet-theme-builder@nukeviet-tools
+```
+
+Hoặc từ terminal:
+
+```
+claude plugin marketplace update nukeviet-tools
+claude plugin uninstall nukeviet-theme-builder@nukeviet-tools
+claude plugin install nukeviet-theme-builder@nukeviet-tools
+```
+
+Khởi động lại Claude Code sau khi cập nhật. Kiểm tra phiên bản bằng `/plugin` (bản hiện tại: 1.1.0).
+
 ## Sử dụng
 
 **Scrape (dữ liệu thật):**
@@ -67,6 +87,16 @@ Claude Code plugin **v1.1.0**: install NukeViet 4.6 and build a custom theme in 
 /plugin install nukeviet-theme-builder@nukeviet-tools
 ```
 CLI: `claude plugin marketplace add huydepzai121/nukeviet-theme-builder` then `claude plugin install nukeviet-theme-builder@nukeviet-tools`. Quick test: `claude --plugin-dir /path/...`.
+
+### Update
+
+```
+/plugin marketplace update nukeviet-tools
+/plugin uninstall nukeviet-theme-builder@nukeviet-tools
+/plugin install nukeviet-theme-builder@nukeviet-tools
+```
+
+CLI: same with `claude plugin ...`. Restart Claude Code afterwards; check the version with `/plugin`.
 
 ### Use
 ```
