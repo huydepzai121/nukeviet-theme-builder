@@ -6,7 +6,7 @@
     {
       "name": "nukeviet-theme-builder",
       "source": "./",
-      "description": "Install NukeViet 4.6 and build custom themes with real content"
+      "description": "Install NukeViet 4.6 and build custom themes — scrape real content or design from scratch (v1.1.0)"
     }
   ]
 }

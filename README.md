@@ -2,45 +2,84 @@
 
 **Tiếng Việt** · [English](#english)
 
-Plugin cho Claude Code: cài NukeViet 4.6 (PHP 8 + MariaDB), dựng giao diện (theme) riêng và nạp **dữ liệu thật** lấy từ website chính thức của tổ chức (bài viết, ảnh, trang giới thiệu, menu), kèm sao lưu DB, kiểm tra HTTP 200, ảnh chụp desktop/mobile và file zip theme.
+Plugin cho Claude Code (v1.1.0): cài NukeViet 4.6 (PHP 8 + MariaDB), dựng giao diện riêng theo **ba chế độ**:
+
+| Chế độ | Khi nào | Nội dung |
+|--------|---------|----------|
+| **A. Scrape** | Có URL website chính thức | Bài viết / ảnh / trang **thật**, kèm link nguồn |
+| **B. Scratch** | Chỉ có tên tổ chức + lĩnh vực + style/màu | Brief thiết kế trước, rồi **nội dung mẫu** (ghi rõ demo, placeholder `[Địa chỉ]`) |
+| **C. From design** | Có ảnh chụp / Figma / Base44 | Bám đúng copy & màu trong thiết kế |
+
+Kèm sao lưu DB, kiểm tra HTTP 200, ảnh chụp desktop/mobile và file zip theme.
 
 ## Cài đặt
-Giải nén `nukeviet-theme-builder.zip` (ví dụ vào `~/claude-plugins/nukeviet-theme-builder`), rồi trong Claude Code:
 ```
 /plugin marketplace add huydepzai121/nukeviet-theme-builder
 /plugin install nukeviet-theme-builder@nukeviet-tools
 ```
-Hoặc từ terminal: `claude plugin marketplace add huydepzai121/nukeviet-theme-builder` rồi `claude plugin install nukeviet-theme-builder@nukeviet-tools`.
-Chạy thử không cần cài: `claude --plugin-dir <đường-dẫn>`.
+Terminal: `claude plugin marketplace add huydepzai121/nukeviet-theme-builder` rồi `claude plugin install nukeviet-theme-builder@nukeviet-tools`.
+Chạy thử: `claude --plugin-dir <đường-dẫn>`.
 
 ## Sử dụng
+
+**Scrape (dữ liệu thật):**
 ```
 /nukeviet-theme Trường Đại học X https://x.edu.vn tenx
 ```
-hoặc chỉ cần yêu cầu "dựng website NukeViet cho ... với dữ liệu thật" – skill `nukeviet-theme-builder` sẽ tự kích hoạt.
+
+**Thiết kế từ đầu (không có website nguồn):**
+```
+/nukeviet-design "Phòng khám ABC" hospital pkabc "hiện đại, xanh teal #0d7377"
+```
+hoặc:
+```
+/nukeviet-theme --scratch "Công ty XYZ" company xyz "tối giản, indigo"
+```
+
+**Theo file thiết kế / ảnh chụp:**
+```
+/nukeviet-theme --from-design "Trường Y" truongy
+```
+(đính kèm screenshot hoặc Figma)
+
+Cũng có thể chỉ nhắn tự nhiên: *"dựng website NukeViet cho … với dữ liệu thật"* hoặc *"thiết kế từ đầu portal bệnh viện màu xanh"* — skill tự chọn mode.
 
 ## Thành phần
-- `skills/nukeviet-theme-builder/SKILL.md` – quy trình
-- `references/` – cấu trúc theme, XTemplate, các lỗi hay gặp
-- `scripts/` – `install_nukeviet.sh`, `router.php`, `scrape_template.py`, `seed_template.php`, `shot.js`, `verify.sh`
-- `examples/vimaru/` – ví dụ thật (ĐH Hàng hải Việt Nam)
-- `commands/nukeviet-theme.md` – lệnh `/nukeviet-theme`
+- `skills/nukeviet-theme-builder/SKILL.md` — quy trình 3 mode
+- `references/` — theme-structure, XTemplate, gotchas, **design-system**
+- `scripts/` — install, router, scrape, **generate_sample_content.py**, sample_content.template.json, seed, shot, verify
+- `examples/vimaru/` — ví dụ scrape (ĐH Hàng hải Việt Nam)
+- `commands/` — `/nukeviet-theme`, `/nukeviet-design`
 
-Lưu ý: mật khẩu chỉ lưu trong `credentials.txt` (chmod 600), không in ra. Khi triển khai phải chép cả `uploads/` và file dump DB, không chỉ zip theme.
+## Lưu ý
+- Mật khẩu chỉ trong `credentials.txt` (chmod 600), không in ra.
+- Mode B/C: không bịa địa chỉ, SĐT, số liệu thống kê như thể thật; dùng placeholder và ghi "nội dung mẫu".
+- Triển khai: chép cả `uploads/` + dump DB, không chỉ zip theme. Mode B kèm `design-brief.md` (+ `ATTRIBUTION.md` nếu dùng Unsplash/Pexels).
 
 ---
 ## English
-Claude Code plugin that installs NukeViet 4.6 (PHP 8 + MariaDB), builds a custom theme and fills it with **real** content scraped from the organization's official website, then backs up the DB, checks HTTP 200s, takes desktop/mobile screenshots and zips the theme.
+
+Claude Code plugin **v1.1.0**: install NukeViet 4.6 and build a custom theme in three modes — **scrape** real content from an official site, **design from scratch** (org + sector + style only) with a design brief and clearly marked sample content, or **from design files** (screenshots / Figma / Base44).
 
 ### Install
-Unzip, then inside Claude Code:
 ```
 /plugin marketplace add huydepzai121/nukeviet-theme-builder
 /plugin install nukeviet-theme-builder@nukeviet-tools
 ```
-CLI: `claude plugin marketplace add huydepzai121/nukeviet-theme-builder` and `claude plugin install nukeviet-theme-builder@nukeviet-tools`. Quick test: `claude --plugin-dir /path/...`.
+CLI: `claude plugin marketplace add huydepzai121/nukeviet-theme-builder` then `claude plugin install nukeviet-theme-builder@nukeviet-tools`. Quick test: `claude --plugin-dir /path/...`.
 
 ### Use
-`/nukeviet-theme <organization or URL> [theme-name]`, or just ask for a NukeViet site with real content.
+```
+# Scrape
+/nukeviet-theme University X https://x.edu.vn tenx
 
-Passwords are stored only in a chmod 600 `credentials.txt`, never printed. Deploy `uploads/` and the DB dump together with the theme zip.
+# From scratch
+/nukeviet-design "ABC Clinic" hospital pkabc "modern teal #0d7377"
+/nukeviet-theme --scratch "XYZ Corp" company xyz "minimal indigo"
+
+# From design assets
+/nukeviet-theme --from-design "School Y" schooly
+```
+
+### Notes
+Passwords only in chmod 600 `credentials.txt`. Scratch mode never invents real addresses/phones/stats — use `[Địa chỉ]`-style placeholders and a visible “sample content” label. Ship `uploads/` + DB dump with the theme zip; include `design-brief.md` for Mode B.

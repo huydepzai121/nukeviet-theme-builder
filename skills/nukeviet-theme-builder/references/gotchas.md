@@ -18,3 +18,11 @@
 - Theme zip excludes `uploads/`; logo/banners/article images live there. Ship uploads + DB dump (or whole site).
 - Cloudflare quick tunnels may be blocked on some networks (port 7844).
 - Never put DB/admin passwords in scripts, theme files, chat or zip. Read from env / a chmod 600 file.
+
+## Mode B (scratch) extras
+- Always write `design-brief.md` before editing tpl/css.
+- Sample articles must contain a visible "nội dung mẫu / sample content" sentence.
+- Contact/topbar/footer: `[Địa chỉ]`, `[Số điện thoại]`, `[Email]`, `[Giờ làm việc]` — never invent a real-looking address or phone.
+- Do not fabricate enrollment numbers, rankings, awards, partner names, or doctor names.
+- Unsplash/Pexels: save `uploads/news/<slug>/ATTRIBUTION.md` (URL, author, license). Prefer SVG/CSS heroes when possible.
+- Deliver design-brief.md next to the theme zip.

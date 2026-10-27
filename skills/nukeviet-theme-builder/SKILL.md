@@ -1,45 +1,122 @@
 ---
 name: nukeviet-theme-builder
-description: Install NukeViet 4.6 locally (PHP 8 + MariaDB) and build or restyle a custom NukeViet theme from a design or an organization's existing website, filled with real scraped content (articles, images, about pages, menus). Use when the user asks for a NukeViet site, a NukeViet theme, or to rebuild a school/company/agency portal on NukeViet.
+description: >
+  Install NukeViet 4.6 locally (PHP 8 + MariaDB) and build a custom theme.
+  Three modes: (1) scrape real content from an organization's official website;
+  (2) design from scratch when the user gives only org name, sector, style/colors
+  (no source site) — produce a design brief first, then sample content clearly
+  marked as placeholder; (3) restyle from design files/screenshots/Figma.
+  Use when asked for a NukeViet site, NukeViet theme, university/company portal,
+  or to design a website on NukeViet from scratch.
 ---
 
 # NukeViet 4.6 theme builder
 
-Goal: a running NukeViet 4.6 site with a custom theme `<theme>` and **real** content from the organization's official site, plus a theme zip, DB dump and screenshots.
+Goal: a running NukeViet 4.6 site with custom theme `<theme>`, content, theme zip, DB dump and screenshots.
 
-Ask (or infer) first: organization name, official URL, theme machine name (lowercase, `[a-z0-9_]`), brand colors/logo, target pages/menu.
+## 0. Mode selection (do this first)
 
-## 1. Install
-1. Install PHP 8.x (cli, mysql/pdo_mysql, gd, curl, mbstring, xml, zip, intl) and MariaDB. Start MariaDB.
-2. Create DB + user with a generated random password (`openssl rand -base64 18`).
-3. Download the NukeViet 4.6 release zip from the official GitHub releases (`https://github.com/nukeviet/nukeviet/releases`), unzip into `<work>/site`.
-4. Run the installer: `scripts/install_nukeviet.sh` (curl-scripted web installer). If the form fields changed, open `install/index.php` steps in a browser/curl and adapt.
-5. Delete `site/install/` afterwards.
-6. Save admin + DB credentials to `<work>/credentials.txt`, `chmod 600`. **Never print passwords in chat or logs; never commit them.**
+Pick **one** mode from what the user gave. If unclear, ask once then proceed.
 
-## 2. Serve
-`php -S 0.0.0.0:<port> scripts/router.php` (set `NV_ROOT` env to the site dir), run detached (`nohup ... &`). The router sends folder URLs to their own `index.php` (so `/admin/` works) and everything else to root `index.php`. Real deployment: Apache/nginx with NukeViet's rewrite rules.
+| Mode | Trigger | Content source |
+|------|---------|----------------|
+| **A. Scrape** | Official URL / "dữ liệu thật" / "lấy từ website …" | Real articles, images, pages from that site. Never invent facts. |
+| **B. Scratch** | Org name + sector + style/colors; no source URL; `/nukeviet-design` or `--scratch` | Original **sample** content, clearly marked. Placeholders `[Địa chỉ]`, `[Số điện thoại]` for unknowns. No fake stats/addresses presented as real. |
+| **C. From design** | Screenshots, Figma, Base44, design files | Copy exact texts/colors/layout from the design; images from design or royalty-free. |
 
-## 3. Theme
-1. `cp -r site/themes/default site/themes/<theme>`. **Never edit `themes/default`** (it is the fallback for every missing template).
-2. Edit `config.ini` (info, `<layoutdefault>`, `<positions>`, `<setlayout>`, `<setblocks>`). See `references/theme-structure.md`.
-3. Rewrite `layout/header_extended.tpl` / `footer_extended.tpl` (XTemplate, see `references/xtemplate-cheatsheet.md`), add `css/custom.css`, `js/custom.js`.
-4. Homepage sections: in `theme.php` → `nv_site_theme()`, before `$xtpl->parse('main')`, query modules (news rows, menu rows, about…) with `$db` and parse `main.home.*` blocks only when `$home` is true. Example: `examples/vimaru/theme-home-snippet.php`.
-5. Override module templates by copying from `themes/default/modules/<mod>/` into `themes/<theme>/modules/<mod>/` only when needed.
-6. Activate: admin → Giao diện → set theme, or `UPDATE nv4_config SET config_value='<theme>' WHERE config_name='site_theme'`. Copy `nv4_<lang>_modthemes` layouts and the needed `nv4_<lang>_blocks_groups/_weight` rows from `default` to `<theme>` (see seed template).
+Ask (or infer) for every mode: organization name, theme machine name (`[a-z0-9_]`), brand colors/logo (or style keywords for B), target pages/menu.
 
-## 4. Real content (never invent facts)
-1. Scrape the official site with `scripts/scrape_template.py` (adjust selectors): categories, latest N articles per category (title, date, body, images), about pages, contact data, logo, banners.
-2. Download every image into `site/uploads/news/<slug>/`, rewrite `src` to local paths, set the first image as article `homeimgfile` (path relative to `uploads/news/`, `homeimgthumb=2`).
-3. Append a source link (`Nguồn: <a href="original">domain</a>`) to every article/page.
-4. Import with `scripts/seed_template.php` (credentials read from env, not hard-coded). Text, dates, names, phone numbers, addresses must come from the source; if unknown leave blank and tell the user.
-5. Clear cache: `rm -rf site/data/cache/*` (keep `index.html`).
+For **mode B**, also get: sector (university, hospital, company, agency…), style (modern, classic, maritime, green…), optional color hex codes.
 
-## 5. Verify & deliver
-1. `mysqldump` backup before each big change and at the end (`<work>/<db>.sql`).
-2. `curl -o /dev/null -w '%{http_code}'` for `/`, a category, an article, an about page, `/admin/` → all 200.
-3. Screenshots: `node scripts/shot.js` desktop 1440 and mobile 390; look at them and fix layout issues.
-4. `cd site/themes && zip -r <work>/theme-<theme>.zip <theme>`. Tell the user that `uploads/<slug>/` (images, logo, banners) and the DB dump must ship too, or deliver the whole site + dump.
-5. Report: URLs (localhost only works on the machine running it), what is real vs. approximated (e.g. publish times), credential file path (not its contents).
+---
+
+## Shared steps (all modes)
+
+### 1. Install
+1. PHP 8.x (cli, mysql/pdo_mysql, gd, curl, mbstring, xml, zip, intl) + MariaDB; start MariaDB.
+2. Create DB + user with random password (`openssl rand -base64 18`).
+3. Download NukeViet 4.6 release zip from GitHub (`https://github.com/nukeviet/nukeviet/releases`) → `<work>/site`.
+4. Run `scripts/install_nukeviet.sh`. Adapt form fields if installer changed.
+5. Delete `site/install/`.
+6. Save credentials to `<work>/credentials.txt`, `chmod 600`. **Never print passwords; never commit them.**
+
+### 2. Serve
+`php -S 0.0.0.0:<port> scripts/router.php` with `NV_ROOT` = site dir, detached (`nohup … &`). Router maps folder URLs to their own `index.php` (so `/admin/` works).
+
+### 3. Theme
+1. `cp -r site/themes/default site/themes/<theme>`. **Never edit `themes/default`.**
+2. Edit `config.ini` (info, layouts, positions, blocks). See `references/theme-structure.md`.
+3. Rewrite `layout/header_extended.tpl` / `footer_extended.tpl` (XTemplate: `references/xtemplate-cheatsheet.md`), `css/custom.css`, `js/custom.js`.
+4. Homepage sections in `theme.php` → `nv_site_theme()`, before `$xtpl->parse('main')`: query modules and parse `main.home.*` only when `$home`. Example: `examples/vimaru/theme-home-snippet.php`. Patterns: `references/design-system.md`.
+5. Override module tpls only when needed (`themes/<theme>/modules/<mod>/`).
+6. Activate theme in DB (`site_theme`); copy `modthemes` + `blocks_groups/_weight` from `default` (see seed template).
+
+### 4. Content — see mode-specific sections below
+
+### 5. Verify & deliver
+1. `mysqldump` before big changes and at the end.
+2. HTTP 200 for `/`, a category, an article, an about page, `/admin/` (`scripts/verify.sh`).
+3. Screenshots desktop 1440 + mobile 390 (`scripts/shot.js`); fix layout issues.
+4. Zip theme; remind user that `uploads/<slug>/` + DB dump must ship too.
+5. Report URLs, what is real vs sample/placeholder, credential file path (not contents).
 
 Gotchas: `references/gotchas.md`.
+
+---
+
+## Mode A — Scrape (real content)
+
+1. Scrape with `scripts/scrape_template.py` (adjust selectors): categories, N articles each, about pages, contact, logo, banners.
+2. Download images → `site/uploads/news/<slug>/`; rewrite `src`; set first image as `homeimgfile` (`homeimgthumb=2`).
+3. Append source link (`Nguồn: <a href="…">domain</a>`) to every article/page.
+4. Import with `scripts/seed_template.php` (env credentials). Dates/names/phones/addresses **must** come from the source; if unknown leave blank and tell the user.
+5. Clear `site/data/cache/*` (keep `index.html`).
+
+---
+
+## Mode B — Design from scratch
+
+When the user has **no** source website: invent a coherent design, then fill with clearly marked sample content.
+
+### B1. Design brief (write this **before** coding)
+Save `<work>/design-brief.md` and show the user. Include:
+- **Brand**: name, sector, voice (formal / friendly / academic…)
+- **Palette**: primary, secondary, accent, neutrals, semantic (success/warn/error) — hex + CSS variable names. See `references/design-system.md`.
+- **Typography**: heading + body fonts (system stack or Google Fonts), type scale (h1–h6, body, small).
+- **Layout**: header (logo, menu, search?), hero style (slider / single banner / video), footer columns.
+- **Homepage sections** (ordered list): e.g. hero, quick links, featured news, notices, events, faculties/services grid, partners, CTA. Map each to a NukeViet module or static block.
+- **Inner pages**: about, news list/detail, contact.
+- **Responsive** notes and accessibility (contrast, focus states).
+
+Wait for a short confirmation **only if** the user asked to review; otherwise proceed after writing the brief.
+
+### B2. Build the theme
+Implement the brief in `config.ini`, header/footer tpl, `custom.css` (CSS variables from the palette), `custom.js`, `theme.php` homepage sections. Prefer CSS/SVG illustrations over stock photos when possible.
+
+### B3. Sample content (never fake real-world facts)
+1. Run `scripts/generate_sample_content.py` (or write JSON by hand from `scripts/sample_content.template.json`):
+   - Categories appropriate to the sector.
+   - 8–15 sample articles with titles/bodies that fit the org; each body **starts or ends** with a visible notice: `Đây là nội dung mẫu.` / `This is sample content.`
+   - About pages with placeholder org description (not copied from a real org).
+   - Contact: use `[Địa chỉ]`, `[Số điện thoại]`, `[Email]` — never invent a street address, phone, or statistic and present it as real.
+   - Dates: use relative recent dates; note they are synthetic.
+2. Images:
+   - Prefer **SVG/CSS** hero/illustrations generated in the theme (no attribution needed).
+   - Or royalty-free from Unsplash/Pexels: download into `uploads/news/<slug>/`, keep an `ATTRIBUTION.md` with photo URL + author + license.
+   - Or image-generation tools if available in the environment — still mark as illustrative.
+3. Seed with `scripts/seed_template.php` pointing at the generated JSON (`DATA_DIR`, `ORG_NAME`, `THEME`, env DB creds).
+4. In footer or about page, add a site-wide note: content is demo/sample until the organization replaces it.
+5. Clear cache.
+
+### B4. Deliver extras
+Include `design-brief.md` and `ATTRIBUTION.md` (if any) next to the theme zip. Tell the user which strings are placeholders to replace.
+
+---
+
+## Mode C — From design files / screenshots / Figma
+
+1. Read the design (screenshots, Figma export, Base44 data file, etc.): extract exact colors, fonts, section order, copy, image URLs.
+2. Build the theme to match; download design images into `uploads/news/<slug>/`.
+3. Content: use texts from the design as-is; for gaps follow Mode B rules (sample + placeholders, never invent facts).
+4. Seed, verify, deliver as above.
+

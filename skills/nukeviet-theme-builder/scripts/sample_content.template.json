@@ -1,0 +1,63 @@
+{
+  "_comment": "Template for Mode B (design from scratch). Replace ORG, sector fields; keep sample notices. Dates are synthetic.",
+  "meta": {
+    "org_name": "ORG_NAME",
+    "sector": "university",
+    "slug": "orgslug",
+    "sample_notice_vi": "Đây là nội dung mẫu phục vụ demo giao diện.",
+    "sample_notice_en": "This is sample content for theme demonstration."
+  },
+  "categories": [
+    {"id": 1, "title": "Tin tức", "alias": "Tin-tuc", "key": "tin-tuc"},
+    {"id": 2, "title": "Thông báo", "alias": "Thong-bao", "key": "thong-bao"},
+    {"id": 3, "title": "Sự kiện", "alias": "Su-kien", "key": "su-kien"},
+    {"id": 4, "title": "Tuyển sinh", "alias": "Tuyen-sinh", "key": "tuyen-sinh"}
+  ],
+  "articles": [
+    {
+      "url": "https://example.invalid/sample/1",
+      "title": "Chào mừng đến với cổng thông tin ORG_NAME",
+      "date": "01/10/2026",
+      "summary": "Bài viết mẫu giới thiệu cổng thông tin điện tử.",
+      "body": "<p><strong>Đây là nội dung mẫu phục vụ demo giao diện.</strong></p><p>ORG_NAME xây dựng cổng thông tin để cung cấp tin tức, thông báo và dịch vụ trực tuyến. Nội dung thật sẽ được cập nhật bởi quản trị viên.</p>",
+      "cats": ["tin-tuc"],
+      "homeimg": ""
+    },
+    {
+      "url": "https://example.invalid/sample/2",
+      "title": "Thông báo lịch làm việc mẫu",
+      "date": "28/09/2026",
+      "summary": "Thông báo mẫu về lịch làm việc.",
+      "body": "<p><strong>Đây là nội dung mẫu phục vụ demo giao diện.</strong></p><p>Thời gian làm việc: [Giờ làm việc]. Mọi chi tiết liên hệ [Email].</p>",
+      "cats": ["thong-bao"],
+      "homeimg": ""
+    },
+    {
+      "url": "https://example.invalid/sample/3",
+      "title": "Sự kiện khai giảng / ra mắt mẫu",
+      "date": "20/09/2026",
+      "summary": "Sự kiện mẫu trên trang chủ.",
+      "body": "<p><strong>Đây là nội dung mẫu phục vụ demo giao diện.</strong></p><p>Sự kiện diễn ra tại [Địa chỉ]. Đây không phải sự kiện có thật.</p>",
+      "cats": ["su-kien"],
+      "homeimg": ""
+    }
+  ],
+  "pages": {
+    "gioi-thieu-chung": {
+      "title": "Giới thiệu",
+      "url": "https://example.invalid/about",
+      "body": "<p><strong>Đây là nội dung mẫu phục vụ demo giao diện.</strong></p><p>ORG_NAME là tổ chức thuộc lĩnh vực [Ngành]. Sứ mạng và tầm nhìn sẽ được cập nhật bởi chủ sở hữu website.</p>"
+    },
+    "lien-he": {
+      "title": "Liên hệ",
+      "url": "https://example.invalid/contact",
+      "body": "<p><strong>Đây là nội dung mẫu phục vụ demo giao diện.</strong></p><ul><li>Địa chỉ: [Địa chỉ]</li><li>Điện thoại: [Số điện thoại]</li><li>Email: [Email]</li></ul>"
+    }
+  },
+  "contact": {
+    "address": "[Địa chỉ]",
+    "phone": "[Số điện thoại]",
+    "email": "[Email]",
+    "hours": "[Giờ làm việc]"
+  }
+}

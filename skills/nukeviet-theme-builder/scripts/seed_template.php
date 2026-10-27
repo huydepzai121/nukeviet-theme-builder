@@ -1,4 +1,6 @@
 <?php
+
+// Mode B: point DATA_DIR at generate_sample_content.py output; set ORG_NAME; edit $cats/$map to match sample_meta.json categories.
 // Generic content importer template. Run: DB_NAME=x DB_USER=x DB_PASS=x THEME=x SLUG=x php seed_template.php
 // Input: articles.json [{url,title,date:"dd/mm/YYYY",summary,body,homeimg?,cats:[key]}], pages.json {alias:{title,url,body}}
 // Credentials come from env (or credentials.txt) - never hard-code them.
