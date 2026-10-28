@@ -2,114 +2,97 @@
 
 **Tiếng Việt** · [English](#english)
 
-Plugin cho Claude Code (v1.1.0): cài NukeViet 4.6 (PHP 8 + MariaDB), dựng giao diện riêng theo **ba chế độ**:
+Plugin cho Claude Code (**v1.2.0**): cài **NukeViet 4.6 bằng Docker Compose** (PHP 8.2-FPM + nginx + MariaDB), dựng giao diện theo ba chế độ (scrape / thiết kế từ đầu / theo file thiết kế).
 
-| Chế độ | Khi nào | Nội dung |
-|--------|---------|----------|
-| **A. Scrape** | Có URL website chính thức | Bài viết / ảnh / trang **thật**, kèm link nguồn |
-| **B. Scratch** | Chỉ có tên tổ chức + lĩnh vực + style/màu | Brief thiết kế trước, rồi **nội dung mẫu** (ghi rõ demo, placeholder `[Địa chỉ]`) |
-| **C. From design** | Có ảnh chụp / Figma / Base44 | Bám đúng copy & màu trong thiết kế |
+> **Bắt buộc Docker.** Skill không cài PHP lên máy host và không dùng `php -S`, trừ khi bạn yêu cầu rõ fallback native.
 
-Kèm sao lưu DB, kiểm tra HTTP 200, ảnh chụp desktop/mobile và file zip theme.
+## Yêu cầu
+- [Docker Desktop](https://docs.docker.com/desktop/) (Windows / macOS) — trên Windows bật **WSL2**
+- hoặc Docker Engine + plugin Compose (Linux)
+- Kiểm tra: `docker compose version`
 
-## Cài đặt
+## Cài đặt plugin
 ```
 /plugin marketplace add huydepzai121/nukeviet-theme-builder
 /plugin install nukeviet-theme-builder@nukeviet-tools
 ```
-Terminal: `claude plugin marketplace add huydepzai121/nukeviet-theme-builder` rồi `claude plugin install nukeviet-theme-builder@nukeviet-tools`.
-Chạy thử: `claude --plugin-dir <đường-dẫn>`.
 
 ## Cập nhật
-
-Trong Claude Code:
-
 ```
 /plugin marketplace update nukeviet-tools
 /plugin uninstall nukeviet-theme-builder@nukeviet-tools
 /plugin install nukeviet-theme-builder@nukeviet-tools
 ```
+Khởi động lại Claude Code; kiểm tra `/plugin` (bản **1.2.0**).
 
-Hoặc từ terminal:
+## Cấu trúc project (sạch)
+```
+project/
+  docker-compose.yml   .env          # mật khẩu chỉ ở đây
+  docker/              # Dockerfile, nginx.conf, setup/backup/…
+  site/                # mã NukeViet (volume)
+  backups/             # .sql + theme zip
+  .work/               # scrape, screenshots, scratch
+```
+Không để `nvzip/`, `nukeviet.zip`, `server.txt`, `credentials.txt` ở root.
 
-```
-claude plugin marketplace update nukeviet-tools
-claude plugin uninstall nukeviet-theme-builder@nukeviet-tools
-claude plugin install nukeviet-theme-builder@nukeviet-tools
+## Chạy stack
+```bash
+# từ thư mục project (sau khi skill/bootstrap chạy setup.sh)
+docker compose --env-file .env up -d --build
+# Cài đặt: http://localhost:8080/install/  (DB host = db)
+# hoặc AUTO_INSTALL=1 khi chạy setup.sh
+rm -rf site/install    # sau khi cài xong
+
+./docker/backup.sh
+./docker/cache-clear.sh
+./docker/theme-zip.sh mytheme
+./docker/shot.sh
+docker compose --profile tools up -d   # Adminer :8081
 ```
 
-Khởi động lại Claude Code sau khi cập nhật. Kiểm tra phiên bản bằng `/plugin` (bản hiện tại: 1.1.0).
-
-## Sử dụng
-
-**Scrape (dữ liệu thật):**
+## Sử dụng trong Claude Code
 ```
-/nukeviet-theme Trường Đại học X https://x.edu.vn tenx
-```
-
-**Thiết kế từ đầu (không có website nguồn):**
-```
-/nukeviet-design "Phòng khám ABC" hospital pkabc "hiện đại, xanh teal #0d7377"
-```
-hoặc:
-```
-/nukeviet-theme --scratch "Công ty XYZ" company xyz "tối giản, indigo"
-```
-
-**Theo file thiết kế / ảnh chụp:**
-```
+/nukeviet-theme Trường X https://x.edu.vn tenx
+/nukeviet-design "Phòng khám ABC" hospital pkabc "teal #0d7377"
+/nukeviet-theme --scratch "Công ty XYZ" company xyz "minimal indigo"
 /nukeviet-theme --from-design "Trường Y" truongy
 ```
-(đính kèm screenshot hoặc Figma)
-
-Cũng có thể chỉ nhắn tự nhiên: *"dựng website NukeViet cho … với dữ liệu thật"* hoặc *"thiết kế từ đầu portal bệnh viện màu xanh"* — skill tự chọn mode.
 
 ## Thành phần
-- `skills/nukeviet-theme-builder/SKILL.md` — quy trình 3 mode
-- `references/` — theme-structure, XTemplate, gotchas, **design-system**
-- `scripts/` — install, router, scrape, **generate_sample_content.py**, sample_content.template.json, seed, shot, verify
-- `examples/vimaru/` — ví dụ scrape (ĐH Hàng hải Việt Nam)
+- `skills/…/SKILL.md` — Docker-first, 3 mode
+- `scripts/docker/` — Compose, Dockerfile, nginx, setup/backup/restore/cache/theme-zip/shot
+- `scripts/` — scrape, seed, generate_sample_content (chạy với DB qua compose)
+- `references/` — theme-structure, XTemplate, design-system, gotchas
 - `commands/` — `/nukeviet-theme`, `/nukeviet-design`
 
 ## Lưu ý
-- Mật khẩu chỉ trong `credentials.txt` (chmod 600), không in ra.
-- Mode B/C: không bịa địa chỉ, SĐT, số liệu thống kê như thể thật; dùng placeholder và ghi "nội dung mẫu".
-- Triển khai: chép cả `uploads/` + dump DB, không chỉ zip theme. Mode B kèm `design-brief.md` (+ `ATTRIBUTION.md` nếu dùng Unsplash/Pexels).
+- Mật khẩu chỉ trong `.env` (chmod 600), không in ra chat.
+- Mode B/C: không bịa địa chỉ/SĐT/số liệu; dùng placeholder và “nội dung mẫu”.
+- Zip theme không gồm `uploads/` — cần kèm SQL + uploads.
 
 ---
 ## English
 
-Claude Code plugin **v1.1.0**: install NukeViet 4.6 and build a custom theme in three modes — **scrape** real content from an official site, **design from scratch** (org + sector + style only) with a design brief and clearly marked sample content, or **from design files** (screenshots / Figma / Base44).
+Claude Code plugin **v1.2.0**: run **NukeViet 4.6 on Docker Compose** (PHP 8.2-FPM + nginx + MariaDB) and build custom themes (scrape / from-scratch / from design files).
 
-### Install
+**Docker is required.** The skill will not install host PHP or use `php -S` unless you explicitly ask for a native fallback. Prerequisite: Docker Desktop (Windows/macOS + WSL2) or Engine + Compose — verify with `docker compose version`.
+
+### Install / update plugin
 ```
 /plugin marketplace add huydepzai121/nukeviet-theme-builder
 /plugin install nukeviet-theme-builder@nukeviet-tools
-```
-CLI: `claude plugin marketplace add huydepzai121/nukeviet-theme-builder` then `claude plugin install nukeviet-theme-builder@nukeviet-tools`. Quick test: `claude --plugin-dir /path/...`.
-
-### Update
-
-```
+# update:
 /plugin marketplace update nukeviet-tools
 /plugin uninstall nukeviet-theme-builder@nukeviet-tools
 /plugin install nukeviet-theme-builder@nukeviet-tools
 ```
 
-CLI: same with `claude plugin ...`. Restart Claude Code afterwards; check the version with `/plugin`.
+### Project layout
+`docker-compose.yml`, `.env` (secrets only), `docker/`, `site/`, `backups/`, `.work/`. No host `credentials.txt` / `php -S` logs in the root.
 
-### Use
-```
-# Scrape
-/nukeviet-theme University X https://x.edu.vn tenx
+### Stack
+`docker compose --env-file .env up -d --build` → http://localhost:8080 — DB host inside the network is `db`. Helpers: `./docker/backup.sh`, `restore.sh`, `cache-clear.sh`, `theme-zip.sh`, `shot.sh` (Playwright container).
 
-# From scratch
-/nukeviet-design "ABC Clinic" hospital pkabc "modern teal #0d7377"
-/nukeviet-theme --scratch "XYZ Corp" company xyz "minimal indigo"
-
-# From design assets
-/nukeviet-theme --from-design "School Y" schooly
-```
-
-### Notes
-Passwords only in chmod 600 `credentials.txt`. Scratch mode never invents real addresses/phones/stats — use `[Địa chỉ]`-style placeholders and a visible “sample content” label. Ship `uploads/` + DB dump with the theme zip; include `design-brief.md` for Mode B.
+### Commands
+`/nukeviet-theme`, `/nukeviet-design` — see Vietnamese section for examples.

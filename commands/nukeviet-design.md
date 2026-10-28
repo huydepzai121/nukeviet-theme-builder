@@ -1,16 +1,15 @@
 ---
-description: Design a NukeViet 4.6 theme from scratch (org name + sector + style/colors, no source website) with sample content
+description: Design a NukeViet 4.6 theme from scratch via Docker (org + sector + style, sample content)
 argument-hint: <organization name> <sector: university|hospital|company|agency> [theme-name] [style/colors]
 ---
 
-Use the `nukeviet-theme-builder` skill in **Mode B (design from scratch)** for: $ARGUMENTS
+Use the `nukeviet-theme-builder` skill in **Mode B** for: $ARGUMENTS
 
-Steps (follow the skill):
-1. Confirm org name, sector, style/colors, theme machine name.
-2. Write `<work>/design-brief.md` (palette, type, homepage sections, layout) **before** coding; show the user.
-3. Install NukeViet 4.6, serve with router, copy `themes/default` → `themes/<name>` (never edit default).
-4. Implement the brief (header/footer tpl, custom.css with CSS variables, theme.php homepage sections). Prefer SVG/CSS illustrations; Unsplash/Pexels only with ATTRIBUTION.md.
-5. Generate sample content: `ORG_NAME=… SECTOR=… SLUG=… OUT=… python3 scripts/generate_sample_content.py` (or fill `sample_content.template.json`). Every article/page must say it is sample content; contact fields use `[Địa chỉ]`, `[Số điện thoại]`, `[Email]`. Never invent stats, street addresses, or awards presented as real.
-6. Seed via `seed_template.php` (env DB credentials), verify 200s, screenshots, zip theme + note uploads/ + DB dump + design-brief.md.
+1. `docker compose version` — if missing, stop and ask for Docker Desktop; no host PHP / no `php -S`.
+2. Bootstrap project with `scripts/docker/setup.sh` (clean layout; secrets in `.env` only).
+3. Write `.work/design-brief.md` before coding.
+4. Implement theme under `site/themes/<name>` (never edit `default`).
+5. Generate sample content (`generate_sample_content.py`); mark as demo; placeholders `[Địa chỉ]` / `[Số điện thoại]` / `[Email]`.
+6. Seed via compose exec; `./docker/backup.sh`, `./docker/shot.sh`, `./docker/theme-zip.sh`.
 
 Never print passwords.

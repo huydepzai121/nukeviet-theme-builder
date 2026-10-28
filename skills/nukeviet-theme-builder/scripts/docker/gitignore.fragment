@@ -1,0 +1,10 @@
+.env
+site/
+backups/*.sql
+.work/
+*.zip
+!theme-*.zip
+credentials.txt
+server.txt
+nukeviet.zip
+nvzip/

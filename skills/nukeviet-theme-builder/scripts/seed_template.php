@@ -5,7 +5,7 @@
 // Input: articles.json [{url,title,date:"dd/mm/YYYY",summary,body,homeimg?,cats:[key]}], pages.json {alias:{title,url,body}}
 // Credentials come from env (or credentials.txt) - never hard-code them.
 $env = fn($k, $d = null) => getenv($k) ?: $d;
-$db = new PDO('mysql:host=localhost;dbname=' . $env('DB_NAME') . ';charset=utf8mb4', $env('DB_USER'), $env('DB_PASS'));
+$db = new PDO('mysql:host=' . $env('DB_HOST', 'db') . ';dbname=' . $env('DB_NAME') . ';charset=utf8mb4', $env('DB_USER'), $env('DB_PASS'));
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $P = $env('PREFIX', 'nv4'); $L = $env('LANG_DATA', 'vi'); $T = "{$P}_{$L}";
 $theme = $env('THEME'); $org = $env('ORG_NAME', '');

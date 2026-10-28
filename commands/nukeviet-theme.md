@@ -1,13 +1,17 @@
 ---
-description: Install NukeViet 4.6 and build a custom theme (scrape real content, design from scratch, or from design files)
+description: Install NukeViet 4.6 with Docker Compose and build a custom theme (scrape, scratch, or from design)
 argument-hint: "[--scratch|--from-design] <organization or URL> [theme-name] [sector] [style]"
 ---
 
-Use the `nukeviet-theme-builder` skill to build a NukeViet 4.6 site for: $ARGUMENTS
+Use the `nukeviet-theme-builder` skill for: $ARGUMENTS
 
-**Mode selection**
-- If arguments include `--scratch`, or there is an org name + sector/style but **no** URL → Mode B (design from scratch): write `design-brief.md` first, then theme + sample content clearly marked as demo, placeholders `[Địa chỉ]` / `[Số điện thoại]` / `[Email]`, no fake real-world facts.
-- If arguments include `--from-design` or the user attached screenshots/Figma/Base44 → Mode C.
-- If a URL / "dữ liệu thật" is present → Mode A (scrape). Never invent facts; append source links.
+**Runtime (mandatory)**
+1. Run `docker compose version`. If Docker/Compose is missing, STOP and tell the user to install Docker Desktop (Windows/macOS + WSL2) or Docker Engine + Compose. Do **not** install PHP on the host. Do **not** run `php -S` unless the user explicitly demands a native fallback.
+2. Use the clean layout: `docker-compose.yml`, `.env`, `docker/`, `site/`, `backups/`, `.work/`. Secrets only in `.env`. Bootstrap with `scripts/docker/setup.sh` (`AUTO_INSTALL=1` when appropriate).
 
-Shared: install, serve with router, copy default theme (never edit default), seed, backups, 200 checks, desktop+mobile screenshots, theme zip. Never print passwords; store in chmod 600 file. Remind that `uploads/` + DB dump must ship with the theme zip.
+**Mode**
+- URL / “dữ liệu thật” → Mode A (scrape; never invent facts; source links).
+- `--scratch` or org+sector/style without URL → Mode B (design brief first, sample content + placeholders).
+- `--from-design` or attached Figma/screenshots → Mode C.
+
+Backup/restore/cache/theme-zip/screenshots via `./docker/*.sh`. Verify `/` and `/admin/` return 200. Never print passwords.

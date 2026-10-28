@@ -1,12 +1,14 @@
 {
   "name": "nukeviet-tools",
   "description": "NukeViet CMS tooling for Claude Code",
-  "owner": { "name": "Trường Phạm Văn" },
+  "owner": {
+    "name": "Tr\u01b0\u1eddng Ph\u1ea1m V\u0103n"
+  },
   "plugins": [
     {
       "name": "nukeviet-theme-builder",
       "source": "./",
-      "description": "Install NukeViet 4.6 and build custom themes — scrape real content or design from scratch (v1.1.0)"
+      "description": "NukeViet 4.6 via Docker Compose \u2014 scrape, scratch, or from design (v1.2.0)"
     }
   ]
 }

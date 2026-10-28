@@ -1,8 +1,18 @@
 {
   "name": "nukeviet-theme-builder",
-  "version": "1.1.0",
-  "description": "Install NukeViet 4.6 locally and build a custom theme — either from an official website (scrape mode) or designed from scratch with sample content.",
-  "author": { "name": "Trường Phạm Văn" },
-  "keywords": ["nukeviet", "php", "cms", "theme", "xtemplate", "vietnam", "design"],
+  "version": "1.2.0",
+  "description": "Install NukeViet 4.6 with Docker Compose and build a custom theme (scrape, design-from-scratch, or from design files).",
+  "author": {
+    "name": "Tr\u01b0\u1eddng Ph\u1ea1m V\u0103n"
+  },
+  "keywords": [
+    "nukeviet",
+    "php",
+    "cms",
+    "theme",
+    "xtemplate",
+    "vietnam",
+    "design"
+  ],
   "license": "MIT"
 }

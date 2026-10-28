@@ -1,28 +1,30 @@
-# Gotchas found in real builds
+# Gotchas
 
-- `localhost:<port>` only works on the machine running `php -S`. Show in that machine's browser or ship site + DB dump.
-- `php -S` without a router: `/admin/` serves 404 / root index. Router must map folder URLs to their own `index.php` and set SCRIPT_NAME/PHP_SELF + chdir.
-- Run `php -S` detached (`nohup ... &`), otherwise it dies with the shell.
-- Delete `install/` after install or NukeViet keeps redirecting/warning.
-- Never edit `themes/default`; it is the fallback for any missing tpl in your theme.
-- New theme has no layouts/blocks in DB: copy `nv4_vi_modthemes` and `nv4_vi_blocks_groups/_weight` rows from `default`, else pages are empty or error "layout".
-- Positions used in layouts must exist in `config.ini`; blocks in removed positions disappear silently.
-- News rows must also be inserted in `nv4_vi_news_<catid>` for each listed category, or category pages are empty.
-- `homeimgfile` is relative to `uploads/news/`; `homeimgthumb=2` = use original file (no thumbnail generation needed); 0 = no image.
-- Clear `data/cache/*` after DB edits (keep index.html), else old menu/config shows.
-- Scraped bodies: rewrite relative `src`/`href` to absolute, then download images and rewrite to local `/uploads/news/<slug>/...`. URL-encode spaces. Some link texts are percent-encoded filenames - decode for display.
-- Notice/announcement posts are often just a PDF link; keep the link, say so to the user.
-- Scanned-image pages (e.g. official decisions) can't be turned into text without OCR: keep the image, note it.
-- Only the date is usually published; the publish time is synthetic - tell the user.
-- Lazy-loaded images: scroll the page before full-page screenshots.
-- Theme zip excludes `uploads/`; logo/banners/article images live there. Ship uploads + DB dump (or whole site).
-- Cloudflare quick tunnels may be blocked on some networks (port 7844).
-- Never put DB/admin passwords in scripts, theme files, chat or zip. Read from env / a chmod 600 file.
+## Docker (default)
+- First command: `docker compose version`. If it fails → stop; install Docker Desktop. Do not fall back to `php -S` unless the user explicitly asks.
+- Never install PHP/MariaDB on the host for this skill. Never leave `server.txt`, host `credentials.txt`, `nvzip/`, or `nukeviet.zip` in the project root — use `.env`, `site/`, `.work/`.
+- DB hostname from PHP containers is `db`, not `localhost`. From the host machine only HTTP ports are exposed (default 8080).
+- Secrets only in `.env` (chmod 600, gitignored). Never print or commit them.
+- After install, delete `site/install/` or NukeViet keeps warning/redirecting.
+- File permissions: PHP-FPM runs as `www-data` (uid 33). If uploads/cache fail on Linux: `docker compose exec php chown -R www-data:www-data /var/www/html/data /var/www/html/uploads`. On Docker Desktop (Windows/macOS) bind mounts usually ignore Unix owners; if writes fail, check Desktop file sharing and that the project is under a shared drive.
+- Windows: use PowerShell/`docker compose`; run `*.sh` via WSL or Git Bash (LF line endings). Prefer `docker compose exec` over host PHP scripts.
+- `docker compose down -v` deletes the MariaDB volume — irreversible without a backup.
+- Adminer: `docker compose --profile tools up -d` → port 8081.
+- Screenshots: `./docker/shot.sh` uses the Playwright image and `host.docker.internal` (Linux adds `host-gateway`).
 
-## Mode B (scratch) extras
-- Always write `design-brief.md` before editing tpl/css.
-- Sample articles must contain a visible "nội dung mẫu / sample content" sentence.
-- Contact/topbar/footer: `[Địa chỉ]`, `[Số điện thoại]`, `[Email]`, `[Giờ làm việc]` — never invent a real-looking address or phone.
+## Theme / NukeViet
+- Never edit `themes/default` (fallback for missing tpls).
+- New theme needs `nv4_*_modthemes` + `blocks_groups/_weight` rows copied from `default`.
+- Positions in layouts must exist in `config.ini`.
+- News rows must also be inserted into `nv4_*_news_<catid>` or category pages are empty.
+- `homeimgfile` is relative to `uploads/news/`; `homeimgthumb=2` = original file.
+- Clear `data/cache/*` after DB edits (`./docker/cache-clear.sh`).
+- Theme zip excludes `uploads/` — ship uploads + SQL too.
+- localhost only works on the machine publishing the port; show in browser on that machine or ship the stack.
+
+## Mode B (scratch)
+- Write `design-brief.md` before editing tpl/css.
+- Sample articles must contain a visible “nội dung mẫu / sample content” line.
+- Contact: `[Địa chỉ]`, `[Số điện thoại]`, `[Email]`, `[Giờ làm việc]` — never invent a real-looking address or phone.
 - Do not fabricate enrollment numbers, rankings, awards, partner names, or doctor names.
-- Unsplash/Pexels: save `uploads/news/<slug>/ATTRIBUTION.md` (URL, author, license). Prefer SVG/CSS heroes when possible.
-- Deliver design-brief.md next to the theme zip.
+- Unsplash/Pexels → `ATTRIBUTION.md`. Prefer SVG/CSS heroes.
